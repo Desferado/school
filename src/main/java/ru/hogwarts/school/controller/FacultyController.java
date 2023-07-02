@@ -19,9 +19,6 @@ public class FacultyController {
     @GetMapping("{id}")
     public ResponseEntity <Faculty> getFaculty (@PathVariable Long  id){
         Faculty faculty = facultyService.findFaculty(id);
-        if (faculty == null){
-            ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(faculty);
     }
     @PostMapping
@@ -32,9 +29,6 @@ public class FacultyController {
     @PutMapping
     public ResponseEntity <Faculty> editFaculty(@RequestBody Faculty faculty){
         Faculty faculty1 = facultyService.editFaculty(faculty);
-        if (faculty1 == null){
-            ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(faculty1);
     }
 
@@ -45,10 +39,28 @@ public class FacultyController {
     }
 
     @GetMapping("{color}")
-    public ResponseEntity <Collection<Faculty>> findByColor(@RequestParam(required = false) @PathVariable String color) {
+    public ResponseEntity <Collection<Faculty>> findAllFaculty(
+            @RequestParam(required = false) @PathVariable String color) {
         if (color != null && !color.isBlank()) {
             return ResponseEntity.ok(facultyService.findByColor(color));
         }
         return ResponseEntity.ok(Collections.emptyList());
+    }
+    @GetMapping("{name}")
+    public ResponseEntity<Faculty> deleteFaculty (@PathVariable String name){
+        facultyService.findByName(name);
+        return ResponseEntity.ok().build();
+    }
+    @GetMapping
+    public ResponseEntity <Collection<Faculty>> findFaculty(
+            @RequestParam(required = false) String color,
+            @RequestParam(required = false) String name) {
+        if (color != null && !color.isBlank()) {
+            return ResponseEntity.ok(facultyService.findByColor(color));
+        }
+        if (name != null && !name.isBlank()){
+            return ResponseEntity.ok(facultyService.findByName(name));
+        }
+         return ResponseEntity.notFound().build();
     }
 }
