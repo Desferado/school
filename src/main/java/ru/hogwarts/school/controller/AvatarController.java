@@ -20,10 +20,10 @@ import java.nio.file.Path;
 
 @RestController
 @RequestMapping("avatar")
-public class AvatarConstructor {
+public class AvatarController {
     private final AvatarService avatarService;
 
-    public AvatarConstructor(AvatarService avatarService) {
+    public AvatarController(AvatarService avatarService) {
         this.avatarService = avatarService;
     }
     @PostMapping(value = "/{studentId}/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

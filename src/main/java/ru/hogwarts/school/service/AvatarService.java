@@ -13,7 +13,6 @@ import java.nio.file.Path;
 import java.io.*;
 import java.nio.file.Files;
 import java.util.Objects;
-
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
 @Service
@@ -52,7 +51,7 @@ public class AvatarService {
     }
 
     public Avatar findAvatar(Long studentId) {
-        return avatarRepository.findAvatarByStudentId(studentId);
+        return avatarRepository.findAvatarByStudentId(studentId).orElse(new Avatar());
     }
 
     private String getExtensions(String fileName) {
