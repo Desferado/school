@@ -54,13 +54,11 @@ class SchoolApplicationWithMockTests {
 
 		JSONObject studentObject = new JSONObject();
 		studentObject.put("name", name);
-
 		Student student = new Student();
 		student.setId(id);
 		student.setName(name);
 		when(studentRepository.findById(any(Long.class))).thenReturn(Optional.of(student));
 		when(studentRepository.save(any(Student.class))).thenReturn(student);
-
 		mockMvc.perform(MockMvcRequestBuilders
 						.post("/student") //send
 						.content(studentObject.toString())

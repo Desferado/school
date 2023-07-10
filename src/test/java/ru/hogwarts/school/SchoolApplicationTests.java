@@ -34,7 +34,7 @@ class SchoolApplicationTests {
 	@Test
 	public void testPostStudent() throws Exception{
 		Student student = new Student();
-		student.setAge(15);
+		student.setAge(20);
 		student.setName("Ron");
 		Assertions.
 				assertThat(this.restTemplate.postForObject("http://localhost:" + port,student, String.class)).isNotEmpty();
