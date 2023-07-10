@@ -1,44 +1,22 @@
 package ru.hogwarts.school.service;
 
+import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.model.Student;
 
 import java.util.Collection;
-import org.springframework.stereotype.Service;
-import ru.hogwarts.school.model.Student;
-import ru.hogwarts.school.repository.StudentRepository;
-import ru.hogwarts.school.model.Faculty;
 
-@Service
-public class StudentService {
-    private final StudentRepository studentRepository;
+public interface StudentService {
+    Student findStudent(Long id);
 
-    public StudentService(StudentRepository studentRepository) {
-        this.studentRepository = studentRepository;
-    }
+    Student createStudent(Student student);
 
-    public Student createStudent(Student student){
-        return studentRepository.save(student);
-    }
+    Student editStudent(Student student);
 
-    public Student findStudent (Long id){
-        return studentRepository.findById(id).orElse(null);
-    }
+    void deleteStudent(Long id);
 
-    public Student editStudent (Student student){
-        return studentRepository.save(student);
-    }
-    public void deleteStudent (Long id){
-        studentRepository.deleteById(id);
-    }
+    Object findAllByAgeBetween(int min, int max);
 
-    public Collection<Student> findByAge(int age) {
-        return studentRepository.findByAge(age);
-    }
-    public Collection<Student> findByAgeBetween (int min, int max){
-        return studentRepository.findByAgeBetween(min,max);
-    }
-    public Student findByName(String name){
-        return studentRepository.findByName(name);
-    }
-    public Collection<Student> findStudentsByFaculty (Faculty faculty) {return studentRepository.findStudentsByFaculty(faculty);}
+    Object findStudentsByFaculty(Faculty faculty);
 
+    Collection<Student> getAll();
 }

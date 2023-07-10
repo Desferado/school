@@ -6,7 +6,6 @@ import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.FacultyService;
 
-import java.util.Collection;
 import java.util.Collections;
 
 @RestController
@@ -40,12 +39,14 @@ public class FacultyController {
     }
 
     @GetMapping("{color}")
-    public ResponseEntity <Collection<Faculty>> findAllFacultyByColor(
+    public ResponseEntity.BodyBuilder findAllFacultyByColor(
             @RequestParam(required = false) @PathVariable String color) {
         if (color != null && !color.isBlank()) {
-            return ResponseEntity.ok(facultyService.findByColor(color));
+            facultyService.findByColor(color);
+            return ResponseEntity.ok();
         }
-        return ResponseEntity.ok(Collections.emptyList());
+        Collections.emptyList();
+        return ResponseEntity.ok();
     }
     @GetMapping("{name}")
     public ResponseEntity<Faculty> deleteFaculty (@PathVariable String name){
@@ -53,19 +54,22 @@ public class FacultyController {
         return ResponseEntity.ok().build();
     }
     @GetMapping
-    public ResponseEntity <Collection<Faculty>> findAllFaculty(
+    public ResponseEntity.BodyBuilder findAllFaculty(
             @RequestParam(required = false) String color,
             @RequestParam(required = false) String name) {
         if (color != null && !color.isBlank()) {
-            return ResponseEntity.ok(facultyService.findByColor(color));
+            facultyService.findByColor(color);
+            return ResponseEntity.ok();
         }
         if (name != null && !name.isBlank()){
-            return ResponseEntity.ok(facultyService.findByName(name));
+            facultyService.findByName(name);
+            return ResponseEntity.ok();
         }
-         return ResponseEntity.notFound().build();
+
+         return (ResponseEntity.BodyBuilder) ResponseEntity.notFound();
     }
-    @GetMapping("/find")
+    @GetMapping("/{id}/students")
     public ResponseEntity <Faculty> findFacultyByStudents (@RequestParam (required = false) Student student) {
-        return ResponseEntity.ok(facultyService.findFacultyByStudents(student));
+        return ResponseEntity.ok((Faculty) facultyService.findFacultyByStudents(student));
     }
 }
