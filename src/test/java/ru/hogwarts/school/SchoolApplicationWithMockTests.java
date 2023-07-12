@@ -16,9 +16,7 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.AvatarRepository;
 import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.repository.StudentRepository;
-import ru.hogwarts.school.service.AvatarService;
-import ru.hogwarts.school.service.FacultyService;
-import ru.hogwarts.school.service.StudentService;
+import ru.hogwarts.school.service.*;
 
 import java.util.Optional;
 
@@ -37,28 +35,30 @@ class SchoolApplicationWithMockTests {
 	private StudentRepository studentRepository;
 	@MockBean
 	private AvatarRepository avatarRepository;
-//	@MockBean
-//	private FacultyRepository facultyRepository;
+	@MockBean
+	FacultyRepository facultyRepository;
 	@SpyBean
-	private StudentService studentService;
+	private StudentServiceImpl studentService;
 	@SpyBean
-	private AvatarService avatarService;
-//	@SpyBean
-//	private FacultyService facultyService;
+	private AvatarServiceImpl avatarService;
+	@SpyBean
+	private FacultyServiceImpl facultyService;
 	@InjectMocks
 	private StudentController studentController;
 	@Test
 	public void saveStudentTest() throws Exception{
 		final Long id = 1L;
 		final String name = "Harry";
-
+		// create json
 		JSONObject studentObject = new JSONObject();
 		studentObject.put("name", name);
 		Student student = new Student();
 		student.setId(id);
 		student.setName(name);
-		when(studentRepository.findById(any(Long.class))).thenReturn(Optional.of(student));
+		// mocking
 		when(studentRepository.save(any(Student.class))).thenReturn(student);
+		when(studentRepository.findById(any(Long.class))).thenReturn(Optional.of(student));
+		// post
 		mockMvc.perform(MockMvcRequestBuilders
 						.post("/student") //send
 						.content(studentObject.toString())
@@ -67,11 +67,40 @@ class SchoolApplicationWithMockTests {
 				.andExpect(status().isOk()) //receive
 				.andExpect(jsonPath("$.id").value(id))
 				.andExpect(jsonPath("$.name").value(name));
+		// getById
 		mockMvc.perform(MockMvcRequestBuilders
 				.get("/student/1")
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk()) //receive
 				.andExpect(jsonPath("$.id").value(id))
 				.andExpect(jsonPath("$.name").value(name));
+		// put
+		mockMvc.perform(MockMvcRequestBuilders
+						.put("/student") //send
+						.content(studentObject.toString())
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk()) //receive
+				.andExpect(jsonPath("$.id").value(id))
+				.andExpect(jsonPath("$.name").value(name));
+	}
+	@Test
+	public void findStudentTest() throws Exception {
+		final Long id = 2L;
+		final String name = "Ron";
+		// create json
+		JSONObject studentObject = new JSONObject();
+		studentObject.put("name", name);
+		Student student = new Student();
+		student.setId(id);
+		student.setName(name);
+
+		when(studentRepository.save(any(Student.class))).thenReturn(student);
+		when(studentRepository.findById(any(Long.class))).thenReturn(Optional.of(student));
+		//deleteById
+		mockMvc.perform(MockMvcRequestBuilders
+						.delete("/student/del/2")
+						.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk());
 	}
 }

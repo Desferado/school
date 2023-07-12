@@ -35,7 +35,7 @@ public class StudentController {
         return ResponseEntity.ok(student1);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity <Student> getStudent (@PathVariable Long  id){
         Student student = studentService.findStudent(id);
         if (student == null){
@@ -44,12 +44,12 @@ public class StudentController {
         return ResponseEntity.ok(student);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/del/{id}")
     public ResponseEntity <Student> deleteStudent (@PathVariable Long  id){
         studentService.deleteStudent(id);
         return ResponseEntity.ok().build();
     }
-    @GetMapping("age")
+    @GetMapping("/age")
     public ResponseEntity.BodyBuilder findAllStudentByAge(
             @RequestParam (required = false) int min,
             @RequestParam (required = false) int max) {
