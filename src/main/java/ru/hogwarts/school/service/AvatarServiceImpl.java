@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import ru.hogwarts.school.dto.AvatarDTO;
 import ru.hogwarts.school.exceptions.StudentNotFoundException;
+import ru.hogwarts.school.mapper.AvatarMapper;
 import ru.hogwarts.school.model.Avatar;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.AvatarRepository;
@@ -16,6 +18,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
@@ -28,10 +31,12 @@ public class AvatarServiceImpl implements AvatarService {
     private String avatarsDir;
     private final StudentRepository studentRepository;
     private final AvatarRepository avatarRepository;
+    private final AvatarMapper avatarMapper;
 
-    public AvatarServiceImpl(StudentRepository studentRepository, AvatarRepository avatarRepository) {
+    public AvatarServiceImpl(StudentRepository studentRepository, AvatarRepository avatarRepository, AvatarMapper avatarMapper) {
         this.avatarRepository = avatarRepository;
         this.studentRepository = studentRepository;
+        this.avatarMapper = avatarMapper;
     }
     public void uploadAvatar(Long studentId, MultipartFile avatarFile) throws IOException {
         Student student = studentRepository.findById(studentId).orElseThrow(StudentNotFoundException::new);
@@ -58,9 +63,12 @@ public class AvatarServiceImpl implements AvatarService {
     public Avatar findAvatar(Long studentId) {
         return avatarRepository.findAvatarByStudentId(studentId).orElse(new Avatar());
     }
-    public List<Avatar> getAllAvatars(Integer pageNumber,Integer pageSize){
+    public List<AvatarDTO> getAllAvatars(Integer pageNumber, Integer pageSize){
         PageRequest pageRequest = PageRequest.of(pageNumber-1, pageSize);
-        return avatarRepository.findAll(pageRequest).getContent();
+        return avatarRepository.findAll(pageRequest).getContent()
+                .stream()
+                .map(avatarMapper::mappedToDTo)
+                .collect(Collectors.toList());
     }
 
     private String getExtensions(String fileName) {
