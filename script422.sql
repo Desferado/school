@@ -10,5 +10,5 @@ CREATE TABLE car (
     id SERIAL PRIMARY KEY,
     brand varchar(50),
     model varchar(50),
-    price NUMERIC
+    price NUMERIC (12,2)
 )
