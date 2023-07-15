@@ -2,8 +2,10 @@ package ru.hogwarts.school.service;
 
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.model.StudentsCategories;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface StudentService {
     Student findStudent(Long id);
@@ -19,4 +21,8 @@ public interface StudentService {
     Object findStudentsByFaculty(Faculty faculty);
 
     Collection<Student> getAll();
+    Integer getSumAllStudents();
+    Integer getAvgAgeAllStudents();
+    List<StudentsCategories> getFiveLastStudents ();
+
 }

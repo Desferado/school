@@ -6,9 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.model.StudentsCategories;
 import ru.hogwarts.school.service.StudentService;
 
 import java.util.Collection;
+import java.util.List;
 
 
 @RestController
@@ -60,5 +62,17 @@ public class StudentController {
     public ResponseEntity.BodyBuilder findStudentsByFaculty (@RequestParam (required = false) Faculty faculty) {
         studentService.findStudentsByFaculty(faculty);
         return ResponseEntity.ok();
+    }
+    @GetMapping("/sumAllStudents")
+    Integer getSumAllStudents(){
+        return studentService.getSumAllStudents();
+    }
+    @GetMapping("/avgAllStudents")
+    Integer getAvgAgeAllStudents(){
+        return studentService.getAvgAgeAllStudents();
+    }
+    @GetMapping("/fiveLastStudents")
+    List<StudentsCategories> getFiveLastStudents(){
+        return studentService.getFiveLastStudents();
     }
 }

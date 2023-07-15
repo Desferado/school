@@ -2,8 +2,11 @@ package ru.hogwarts.school.service;
 
 
 import java.util.Collection;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.model.StudentsCategories;
 import ru.hogwarts.school.repository.StudentRepository;
 import ru.hogwarts.school.model.Faculty;
 
@@ -39,4 +42,13 @@ public class StudentServiceImpl implements StudentService {
     }
     public Collection<Student> findStudentsByFaculty (Faculty faculty) {return studentRepository.findStudentsByFaculty(faculty);}
 
+    public Integer getSumAllStudents(){
+        return studentRepository.getSumAllStudents();
+    }
+    public Integer getAvgAgeAllStudents(){
+        return studentRepository.getAvgAgeAllStudents();
+    }
+    public List<StudentsCategories> getFiveLastStudents (){
+        return studentRepository.getFiveLastStudents();
+    }
 }
