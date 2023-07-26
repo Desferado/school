@@ -8,6 +8,9 @@ import ru.hogwarts.school.repository.FacultyRepository;
 import ch.qos.logback.classic.Logger;
 
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -31,6 +34,15 @@ public class FacultyServiceImpl implements FacultyService {
             logger.warn("There is not faculty with id = " + id);
             return null;
         });
+    }
+    public String findLongestNameFaculty(){
+        logger.info("Was invoked method for get the longest name faculty");
+        List<Faculty> faculties = facultyRepository.findAll();
+        return faculties.stream()
+                .map(Faculty::getName)
+                .sorted(Comparator.comparingInt(String::length).reversed())
+                .toList()
+                .get(0);
     }
 
     public Faculty editFaculty (Faculty faculty){

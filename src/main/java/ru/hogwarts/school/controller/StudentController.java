@@ -52,12 +52,13 @@ public class StudentController {
         return ResponseEntity.ok().build();
     }
     @GetMapping("/age")
-    public ResponseEntity.BodyBuilder findAllStudentByAge(
+    public ResponseEntity.BodyBuilder findAllStudentByAgeBetween(
             @RequestParam (required = false) int min,
             @RequestParam (required = false) int max) {
         studentService.findAllByAgeBetween(min, max);
         return ResponseEntity.ok();
     }
+
     @GetMapping("/find/{let}")
     public ResponseEntity<List<String>> findAllStudentsWhomNameStartWith(@PathVariable String let){
        return ResponseEntity.ok(studentService.findAllStudentsWhomNameStartWith(let));

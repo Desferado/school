@@ -7,6 +7,7 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.FacultyService;
 
 import java.util.Collections;
+import java.util.List;
 
 @RestController
 @RequestMapping("faculty")
@@ -71,5 +72,9 @@ public class FacultyController {
     @GetMapping("/{id}/students")
     public ResponseEntity <Faculty> findFacultyByStudents (@RequestParam (required = false) Student student) {
         return ResponseEntity.ok((Faculty) facultyService.findFacultyByStudents(student));
+    }
+    @GetMapping("/findlongestname")
+    public ResponseEntity <String>findTheLongestNameFaculty(){
+        return ResponseEntity.ok(facultyService.findLongestNameFaculty());
     }
 }
