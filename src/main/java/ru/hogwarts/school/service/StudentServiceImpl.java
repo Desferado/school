@@ -3,6 +3,9 @@ package ru.hogwarts.school.service;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 import ch.qos.logback.classic.Logger;
 
 import org.slf4j.LoggerFactory;
@@ -68,5 +71,15 @@ public class StudentServiceImpl implements StudentService {
     public List<StudentsCategories> getFiveLastStudents (){
         logger.info("Was invoked method for get five last students");
         return studentRepository.getFiveLastStudents();
+    }
+    public List<String> findAllStudentsWhomNameStartWith(String let){
+        logger.info("Was invoked method for find all students who name start with ");
+        String letUp = let.toUpperCase();
+        List <Student> students = studentRepository.findAll();
+        return students.stream()
+                .map(p->p.getName().toUpperCase())
+                .sorted()
+                .filter(n->n.startsWith(letUp))
+                .collect(Collectors.toList());
     }
 }
