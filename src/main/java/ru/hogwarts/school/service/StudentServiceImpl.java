@@ -3,9 +3,8 @@ package ru.hogwarts.school.service;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import ch.qos.logback.classic.Logger;
 
@@ -82,5 +81,10 @@ public class StudentServiceImpl implements StudentService {
                 .sorted()
                 .filter(n->n.startsWith(letUp))
                 .collect(Collectors.toList());
+    }
+    public Double getAvgAgeAllStudentsStream(){
+        logger.info("Was invoked method for get average age all students");
+        List <Student> students = studentRepository.findAll();
+        return students.stream().map(Student::getAge).mapToInt(Integer::intValue).average().getAsDouble();
     }
 }

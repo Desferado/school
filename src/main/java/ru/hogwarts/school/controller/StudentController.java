@@ -76,6 +76,10 @@ public class StudentController {
     Integer getAvgAgeAllStudents(){
         return studentService.getAvgAgeAllStudents();
     }
+    @GetMapping("/avgAllStudentsStream")
+    Double getAvgAgeAllStudentsStream(){
+        return studentService.getAvgAgeAllStudentsStream();
+    }
     @GetMapping("/fiveLastStudents")
     List<StudentsCategories> getFiveLastStudents(){
         return studentService.getFiveLastStudents();

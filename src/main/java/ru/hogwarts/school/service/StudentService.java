@@ -25,5 +25,5 @@ public interface StudentService {
     Integer getAvgAgeAllStudents();
     List<StudentsCategories> getFiveLastStudents ();
     List<String> findAllStudentsWhomNameStartWith(String let);
-
+    Double getAvgAgeAllStudentsStream();
 }
