@@ -26,4 +26,6 @@ public interface StudentService {
     List<StudentsCategories> getFiveLastStudents ();
     List<String> findAllStudentsWhomNameStartWith(String let);
     Double getAvgAgeAllStudentsStream();
+    void getThreads();
+    void getSynchroThreads();
 }

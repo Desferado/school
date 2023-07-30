@@ -4,7 +4,6 @@ package ru.hogwarts.school.service;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import ch.qos.logback.classic.Logger;
 
@@ -87,4 +86,38 @@ public class StudentServiceImpl implements StudentService {
         List <Student> students = studentRepository.findAll();
         return students.stream().map(Student::getAge).mapToInt(Integer::intValue).average().getAsDouble();
     }
+    public void getThreads(){
+        List <Student> students = studentRepository.findAll();
+        printStudentName(students.get(0));
+         printStudentName(students.get(1));
+        new Thread (()->{
+        printStudentName(students.get(2));
+        printStudentName(students.get(3));}).start();
+        new Thread (()->{
+        printStudentName(students.get(4));
+        printStudentName(students.get(5));}).start();
+    }
+    private void printStudentName(Student student){
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println(student.getName());
+    }
+    public void getSynchroThreads(){
+        List <Student> students = studentRepository.findAll();
+        printStudentNameSynchro(students.get(0));
+        printStudentNameSynchro(students.get(1));
+        new Thread (()->{
+            printStudentNameSynchro(students.get(2));
+            printStudentNameSynchro(students.get(3));}).start();
+        new Thread (()->{
+            printStudentNameSynchro(students.get(4));
+            printStudentNameSynchro(students.get(5));}).start();
+    }
+    private synchronized void printStudentNameSynchro(Student student){
+        System.out.println(student.getName());
+    }
+
 }

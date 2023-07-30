@@ -84,4 +84,10 @@ public class StudentController {
     List<StudentsCategories> getFiveLastStudents(){
         return studentService.getFiveLastStudents();
     }
+    @GetMapping("/threads")
+    void getThreads(){
+        studentService.getThreads();}
+    @GetMapping("/synchroThreads")
+    void getSynchroThreads(){
+        studentService.getSynchroThreads();}
 }
