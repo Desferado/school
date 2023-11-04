@@ -3,10 +3,11 @@ package ru.hogwarts.school.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.FacultyService;
 
-import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @RestController
 @RequestMapping("faculty")
@@ -19,9 +20,6 @@ public class FacultyController {
     @GetMapping("{id}")
     public ResponseEntity <Faculty> getFaculty (@PathVariable Long  id){
         Faculty faculty = facultyService.findFaculty(id);
-        if (faculty == null){
-            ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(faculty);
     }
     @PostMapping
@@ -32,9 +30,6 @@ public class FacultyController {
     @PutMapping
     public ResponseEntity <Faculty> editFaculty(@RequestBody Faculty faculty){
         Faculty faculty1 = facultyService.editFaculty(faculty);
-        if (faculty1 == null){
-            ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(faculty1);
     }
 
@@ -45,10 +40,41 @@ public class FacultyController {
     }
 
     @GetMapping("{color}")
-    public ResponseEntity <Collection<Faculty>> findByColor(@RequestParam(required = false) @PathVariable String color) {
+    public ResponseEntity.BodyBuilder findAllFacultyByColor(
+            @RequestParam(required = false) @PathVariable String color) {
         if (color != null && !color.isBlank()) {
-            return ResponseEntity.ok(facultyService.findByColor(color));
+            facultyService.findByColor(color);
+            return ResponseEntity.ok();
         }
-        return ResponseEntity.ok(Collections.emptyList());
+        Collections.emptyList();
+        return ResponseEntity.ok();
+    }
+    @GetMapping("{name}")
+    public ResponseEntity<Faculty> deleteFaculty (@PathVariable String name){
+        facultyService.findByName(name);
+        return ResponseEntity.ok().build();
+    }
+    @GetMapping
+    public ResponseEntity.BodyBuilder findAllFaculty(
+            @RequestParam(required = false) String color,
+            @RequestParam(required = false) String name) {
+        if (color != null && !color.isBlank()) {
+            facultyService.findByColor(color);
+            return ResponseEntity.ok();
+        }
+        if (name != null && !name.isBlank()){
+            facultyService.findByName(name);
+            return ResponseEntity.ok();
+        }
+
+         return (ResponseEntity.BodyBuilder) ResponseEntity.notFound();
+    }
+    @GetMapping("/{id}/students")
+    public ResponseEntity <Faculty> findFacultyByStudents (@RequestParam (required = false) Student student) {
+        return ResponseEntity.ok((Faculty) facultyService.findFacultyByStudents(student));
+    }
+    @GetMapping("/findlongestname")
+    public ResponseEntity <String>findTheLongestNameFaculty(){
+        return ResponseEntity.ok(facultyService.findLongestNameFaculty());
     }
 }

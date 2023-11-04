@@ -1,35 +1,31 @@
 package ru.hogwarts.school.service;
 
-import org.springframework.stereotype.Service;
+import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
-import ru.hogwarts.school.repository.StudentRepository;
+import ru.hogwarts.school.model.StudentsCategories;
 
 import java.util.Collection;
+import java.util.List;
 
-@Service
-public class StudentService {
-    private final StudentRepository studentRepository;
+public interface StudentService {
+    Student findStudent(Long id);
 
-    public StudentService(StudentRepository studentRepository) {
-        this.studentRepository = studentRepository;
-    }
+    Student createStudent(Student student);
 
-    public Student createStudent(Student student){
-        return studentRepository.save(student);
-    }
+    Student editStudent(Student student);
 
-    public Student findStudent (Long id){
-        return studentRepository.findById(id).get();
-    }
+    void deleteStudent(Long id);
 
-    public Student editStudent (Student student){
-        return studentRepository.save(student);
-    }
-    public void deleteStudent (Long id){
-        studentRepository.deleteById(id);
-    }
+    Object findAllByAgeBetween(int min, int max);
 
-    public Collection<Student> findByAge(int age) {
-        return studentRepository.findByAge(age);
-    }
+    Object findStudentsByFaculty(Faculty faculty);
+
+    Collection<Student> getAll();
+    Integer getSumAllStudents();
+    Integer getAvgAgeAllStudents();
+    List<StudentsCategories> getFiveLastStudents ();
+    List<String> findAllStudentsWhomNameStartWith(String let);
+    Double getAvgAgeAllStudentsStream();
+    void getThreads();
+    void getSynchroThreads();
 }
